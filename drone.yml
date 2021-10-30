@@ -1,0 +1,16 @@
+clone :
+   depth : 1
+kind: pipeline
+name : Serum
+steps:
+ - name: SM6250
+   image: panchajanya1999/archlinux:latest
+   environment:
+     token:
+       from_secret: token
+     chat_id:
+       from_secret: chat_id
+   commands:
+ - pacman -Sy && pacman -S cpio --noconfirm
+ - curl https://raw.githubusercontent.com/ayash92/my-script/main/kernel_build.sh
+ - bash kernel_build.sh
