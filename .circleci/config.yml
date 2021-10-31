@@ -1,0 +1,16 @@
+version: 2.0
+
+jobs:
+  Serum:
+    docker:
+      - image: panchajanya1999/archlinux:latest
+    steps:
+      - run: pacman -Sy && pacman -S cpio --noconfirm
+      - run: git clone --depth=1 https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} -b ${CIRCLE_BRANCH} .
+      - run: curl https://raw.githubusercontent.com/ayash92/my-script/main/kernel_build.sh -o build
+      - run: bash build
+workflows:
+  version: 2
+  build:
+    jobs:
+      - Serum
