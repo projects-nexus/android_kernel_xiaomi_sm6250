@@ -1,17 +1,16 @@
-version: 2.1
+version: 2.0
+
 jobs:
-  compile:
-   docker:
+  Serum:
+    docker:
       - image: panchajanya1999/archlinux:latest
-   steps:
-      - run:
-          command: |
-           pacman -Sy && pacman -S cpio dpkg --noconfirm
-           wget http://archive.ubuntu.com/ubuntu/pool/main/n/ncurses/libtinfo6_6.2+20201114-2build1_amd64.deb -O libtinfo6.deb && dpkg-deb -R libtinfo6.deb libtinfo && cp libtinfo/lib/x86_64-linux-gnu/libtinfo.so.6.2 /usr/lib/libtinfo.so.6
-           git clone --depth=1 https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} -b ${CIRCLE_BRANCH} .
-           bash build.sh --eva
+    steps:
+      - run: pacman -Sy && pacman -S cpio --noconfirm
+      - run: git clone --depth=1 https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} -b ${CIRCLE_BRANCH} .
+      - run: curl https://raw.githubusercontent.com/ayash92/my-script/main/kernel_build.sh -o build
+      - run: bash build
 workflows:
-  version: 2.1
-  cooking:
+  version: 2
+  build:
     jobs:
-      - compile
+      - Serum
